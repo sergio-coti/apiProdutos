@@ -71,6 +71,14 @@
 			<version>2.3.0</version>
 		</dependency>
 
+		<!--
+		https://mvnrepository.com/artifact/org.modelmapper.extensions/modelmapper-spring -->
+		<dependency>
+			<groupId>org.modelmapper.extensions</groupId>
+			<artifactId>modelmapper-spring</artifactId>
+			<version>3.2.0</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

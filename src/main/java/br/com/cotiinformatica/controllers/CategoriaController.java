@@ -1,8 +1,10 @@
 package br.com.cotiinformatica.controllers;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,6 +17,9 @@ import br.com.cotiinformatica.repositories.CategoriaRepository;
 @RequestMapping("/api/categorias")
 public class CategoriaController {
 
+	@Autowired
+	private ModelMapper modelMapper;
+	
 	@GetMapping
 	public List<CategoriaResponseDto> getAll() throws Exception {
 		
@@ -22,17 +27,11 @@ public class CategoriaController {
 		CategoriaRepository categoriaRepository = new CategoriaRepository();		
 		List<Categoria> categorias = categoriaRepository.findAll();
 		
-		//copiando as informações de cada categoria do banco de dados
-		//para uma lista que irá retornar os objetos DTO de resposta
-		List<CategoriaResponseDto> response = new ArrayList<>();
-		for(Categoria categoria : categorias) {
-			
-			CategoriaResponseDto dto = new CategoriaResponseDto();
-			dto.setId(categoria.getId());
-			dto.setNome(categoria.getNome());
-			
-			response.add(dto);
-		}
+		//copiando os dados das categorias para uma lista da classe DTO
+		List<CategoriaResponseDto> response = categorias
+				.stream()
+				.map(categoria -> modelMapper.map(categoria, CategoriaResponseDto.class))
+				.collect(Collectors.toList());
 		
 		//retornar a lista do dto (response)
 		return response;
